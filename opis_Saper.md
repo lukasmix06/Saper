@@ -1,7 +1,7 @@
 # Saper
 Projekt gry komputerowej Saper
 
-Repozytorium w GitHub:
+Repozytorium w GitHub: https://github.com/lukasmix06/Saper
 
 * **Główne okno** gry będzie posiadać:
   * dwa pola tekstowe do wprowadzania przez użytkownika obu rozmiarów planszy - N na M pól (obie zmienne typ int)
@@ -30,37 +30,37 @@ Repozytorium w GitHub:
     * jeśli było ono wolne od miny nic się nie dzieje
     * nawet jeśli miało pierwotnie podłożoną minę, zachowuje się tak jakby jej nie miało, a jego mina zostaje przeniesiona na losowe pole wolne
   
-**Po kliknięciu lewym przyciskiem** na pole:
- * jeśli jest tam mina, wyświetla się informacja o przegranej, gra się kończy
- * jeśli nie ma miny, ale w sąsiedztwie pola są miny, to pole dezaktywuje się, a na odkrytym przycisku wyświetlana jest ich liczba
- * jeśli nie ma miny i w bezpośrednim sąsiedztwie też nie ma miny, to to pole, dezaktywuje się, a wraz z nim dezaktywują się wszystkie sąsiadujące pola bez min, aż do pól, które z minami sąsiadują
+* **Po kliknięciu lewym przyciskiem** na pole:
+  * jeśli jest tam mina, wyświetla się informacja o przegranej, gra się kończy
+  * jeśli nie ma miny, ale w sąsiedztwie pola są miny, to pole dezaktywuje się, a na odkrytym przycisku wyświetlana jest ich liczba
+  * jeśli nie ma miny i w bezpośrednim sąsiedztwie też nie ma miny, to to pole, dezaktywuje się, a wraz z nim dezaktywują się wszystkie sąsiadujące pola bez min, aż do pól, które z minami sąsiadują
  
-**Po kliknięciu prawym przyciskiem** na pole:
- * można oflagować pole jako posiadające minę
- * po ponownym kliknięciu można oznakować pole znakiem zapytania, jako możliwa mina
- * po kolejnym kliknięciu oznaczenie znika
+* **Po kliknięciu prawym przyciskiem** na pole:
+  * można oflagować pole jako posiadające minę
+  * po ponownym kliknięciu można oznakować pole znakiem zapytania, jako możliwa mina
+  * po kolejnym kliknięciu oznaczenie znika
  
-**Gra kończy się wygraną** w momencie:
- * gdy kliknięte zostaną wszystkie pola bez min lub
- * gdy oflagowane zostaną wszystkie, i jako jedyne, pola z minami
+* **Gra kończy się wygraną** w momencie:
+  * gdy kliknięte zostaną wszystkie pola bez min lub
+  * gdy oflagowane zostaną wszystkie, i jako jedyne, pola z minami
  
- **Tajemny manewr**:
- * Sekwencja klawiszy "xyzzy" pozwala na przyciemnienie pól pod którymi znajdują się miny.
+* **Tajemny manewr**:
+  * Sekwencja klawiszy "xyzzy" pozwala na przyciemnienie pól pod którymi znajdują się miny.
  
- **Testy**:
+* **Testy**:
  1. Próba rozpoczęcia gry z rozmiarem planszy i liczbą min: (1 na 1; 1), (5 na 1; 2), (4 na 1; 2), (20 na 500; 12), (5 na 6; -4), (3 na 3; 10), (1 na 10; 5) - oczekiwane komunikaty o błędzie. Wprowadzenie rozmiarów planszy 8 na 8 i liczby min równej 12 na potrzeby kolejnych testów.
-2. Kliknięcie pola, wyświetla się liczba min w sąsiedztwie pola,
-3. Kliknięcie pola, wyświetla się mina, gra się kończy,
-4. Kliknięcie pola, brak min w sąsiedztwie - oczekiwane automatyczne sprawdzenie sąsiadów aż do wyznaczenia obszaru wyznaczonego przez pola sąsiadujące z minami lub krawędzie planszy,
-5. Oznaczenie pola jako “tu jest mina” - licznik oznaczonych powinien wzrosnąć o 1,
-6. Oznaczenie innego pola jako “tu może być mina”,
-7. Oznaczenie pola, odznaczenie go, ponowne oznaczenie i ponowne odznaczenie - licznik oznaczonych powinien się odpowiednio aktualizować,
-8. Wygranie gry przez kliknięcie wszystkich pól bez min,
-9. Wygranie gry przez oznaczenie wszystkich pól z minami
-10. Próba oznaczenia sprawdzonego pola - oczekiwane niepowodzenie,
-11. Sprawdzenie kilku pól bez min, oznaczenie pól “tu jest mina”, rozpoczęcie nowej gry - licznik min powinien się zaktualizować, a pola zresetować.
-12. Wpisanie kodu xyzzy, zresetowanie gry - wszystkie pola powinny odzyskać standardowy kolor.
-13. Wykonanie 10 testów z kliknięciem pierwszego dowolnie wybranego pola w nowej grze, każde takie pole powinno być wolne od miny.
+ 2. Kliknięcie pola, wyświetla się liczba min w sąsiedztwie pola,
+ 3. Kliknięcie pola, wyświetla się mina, gra się kończy,
+ 4. Kliknięcie pola, brak min w sąsiedztwie - oczekiwane automatyczne sprawdzenie sąsiadów aż do wyznaczenia obszaru wyznaczonego przez pola sąsiadujące z minami lub krawędzie planszy,
+  5. Oznaczenie pola jako “tu jest mina” - licznik oznaczonych powinien wzrosnąć o 1,
+  6. Oznaczenie innego pola jako “tu może być mina”,
+  7. Oznaczenie pola, odznaczenie go, ponowne oznaczenie i ponowne odznaczenie - licznik oznaczonych powinien się odpowiednio aktualizować,
+  8. Wygranie gry przez kliknięcie wszystkich pól bez min,
+  9. Wygranie gry przez oznaczenie wszystkich pól z minami
+  10. Próba oznaczenia sprawdzonego pola - oczekiwane niepowodzenie,
+  11. Sprawdzenie kilku pól bez min, oznaczenie pól “tu jest mina”, rozpoczęcie nowej gry - licznik min powinien się zaktualizować, a pola zresetować.
+  12. Wpisanie kodu xyzzy, zresetowanie gry - wszystkie pola powinny odzyskać standardowy kolor.
+  13. Wykonanie 10 testów z kliknięciem pierwszego dowolnie wybranego pola w nowej grze, każde takie pole powinno być wolne od miny.
  
  
  
