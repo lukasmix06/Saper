@@ -8,17 +8,20 @@ Projekt gry komputerowej Saper
   * przycisk rozpoczęcia nowej gry (element interfejsu, z napisem string "Rozpocznij!")
   * wygenerowana graficzna siatka przycisków o wymiarach podanych przez użytkownika oraz liczbie ukrytych min zgodną z tą
   podaną przez użytkownika
-   - siatka będzie reprezentowana przez klasę, zawierającą tablicę 2 wymiarową obiektów-przycisków
-  
-  <UŻYWANE TYPY DANYCH, KLASY>
-  
+   - siatka będzie reprezentowana przez klasę, zawierającą tablicę 2 wymiarową obiektów-przycisków(pól), każde pole będzie posiadać co najmniej 5 zmiennych, z których:
+   1. reprezentuje fakt posiadania bomby (1) lub jej braku (0)
+   2. zmienna, która przechowuje zliczone bomby w sąsiednich polach
+   3. zmienna odnotowująca fakt oflaowania (0 lub 1)
+   4. odzwierciedla oznaczenie znakiem zapytania oraz (0 lub 1)
+   5. naciśnięcie danego pola (0 lub 1)
+    
 * **Komunikaty o błędach** pojawiają się podczas następujących akcji:
   * wprowadzany rozmiar planszy < 2 x 2 pola
   * wprowadzany rozmiar planszy > 15 x 15 pól
   * wprowadzenie ujemnej liczby min
   * wprowadzenie min większej niż wynikającej z rozmiarów planszy (m*n)
   
-* **Sprawdzanie poprawności wprowadzanych danych** będzie odbywać się przy pomocy mechanizmu wyjątków np....
+* **Sprawdzanie poprawności wprowadzanych danych** będzie odbywać się przy pomocy mechanizmu wyjątków
 
 * **Na początku gry** na losowych wygenerowanych polach umieszczane są miny w liczbie zgodnej z podaną przez użytkowania, każde rozłożenie min jest równie prawdopodobne przy czym:
   * **pierwsze pole na które kliknie użytkownik**, nie może posiadać miny, w tym celu:
