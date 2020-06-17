@@ -21,7 +21,7 @@ Repozytorium w GitHub: https://github.com/lukasmix06/Saper
   * wprowadzany rozmiar planszy < 2 x 2 pola
   * wprowadzany rozmiar planszy > 15 x 15 pól
   * wprowadzenie ujemnej liczby min
-  * wprowadzenie min większej niż wynikającej z rozmiarów planszy (m*n)
+  * wprowadzenie liczby min równej lub większej niż wynikającej z rozmiarów planszy (m*n)
   
 * **Sprawdzanie poprawności wprowadzanych danych** będzie odbywać się przy pomocy mechanizmu wyjątków
 

@@ -11,3 +11,11 @@ while(1):
         break
     else:
         print("Niewlasciwy rozmiar! - musi miescic się w zakresie [2 - 15]")
+
+while(1):
+    lMin = int(input("Wprowadź liczbę min: "))
+    if lMin >= 0 and lMin < n*m:
+        break
+    else:
+        print("Niewlasciwa liczba min - musi byc nieujemna i mniejsza od calkowitej liczby pol")
+
