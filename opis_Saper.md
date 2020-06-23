@@ -13,9 +13,9 @@ Repozytorium w GitHub: https://github.com/lukasmix06/Saper
    - siatka będzie reprezentowana przez klasę, zawierającą tablicę 2 wymiarową obiektów-przycisków(pól), każde pole będzie posiadać co najmniej 5 zmiennych, z których:
     1. reprezentuje fakt posiadania bomby (1) lub jej braku (0)
     2. zmienna, która przechowuje zliczone bomby w sąsiednich polach
-    3. zmienna odnotowująca fakt oflaowania (0 lub 1)
-    4. odzwierciedla oznaczenie znakiem zapytania oraz (0 lub 1)
-    5. naciśnięcie danego pola (0 lub 1)
+    3. zmienna odnotowująca fakt oflagowania (0 lub 1)
+    4. zmienna odnotowująca oznaczenie pola znakiem zapytania (0 lub 1)
+    5. fakt naciśnięcie danego pola - staje się ono widoczne (0 lub 1)
     
 * **Komunikaty o błędach** pojawiają się podczas następujących akcji:
   * wprowadzany rozmiar planszy < 2 x 2 pola
@@ -25,10 +25,8 @@ Repozytorium w GitHub: https://github.com/lukasmix06/Saper
   
 * **Sprawdzanie poprawności wprowadzanych danych** będzie odbywać się przy pomocy mechanizmu wyjątków
 
-* **Na początku gry** na losowych wygenerowanych polach umieszczane są miny w liczbie zgodnej z podaną przez użytkowania, każde rozłożenie min jest równie prawdopodobne przy czym:
-  * **pierwsze pole na które kliknie użytkownik**, nie może posiadać miny, w tym celu:
-    * jeśli było ono wolne od miny nic się nie dzieje
-    * nawet jeśli miało pierwotnie podłożoną minę, zachowuje się tak jakby jej nie miało, a jego mina zostaje przeniesiona na losowe pole wolne
+* **Na początku gry** żadne z pól nie posiada bomby, przy założeniu że **pierwsze pole, na które kliknie użytkownik**, nie może posiadać miny, pozwalamy na kliknięcie dowolnego pola
+przez użytkownika, a następnie na pozostałych polach rozmieszczamy losowo wygenerowane miny w liczbie zgodnej z podaną przez użytkownika.
   
 * **Po kliknięciu lewym przyciskiem** na pole:
   * jeśli jest tam mina, wyświetla się informacja o przegranej, gra się kończy
