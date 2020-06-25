@@ -22,8 +22,6 @@ Repozytorium w GitHub: https://github.com/lukasmix06/Saper
   * wprowadzany rozmiar planszy > 15 x 15 pól
   * wprowadzenie ujemnej liczby min
   * wprowadzenie liczby min równej lub większej niż wynikającej z rozmiarów planszy (m*n)
-  
-* **Sprawdzanie poprawności wprowadzanych danych** będzie odbywać się przy pomocy mechanizmu wyjątków
 
 * **Na początku gry** żadne z pól nie posiada bomby, przy założeniu że **pierwsze pole, na które kliknie użytkownik**, nie może posiadać miny, pozwalamy na kliknięcie dowolnego pola
 przez użytkownika, a następnie na pozostałych polach rozmieszczamy losowo wygenerowane miny w liczbie zgodnej z podaną przez użytkownika.
