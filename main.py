@@ -108,9 +108,9 @@ class Plansza:
 
 
 TRYB_INTERAKCJI = {
-    'k': 'klikniecie',
-    'f': 'flaga',
-    'p': 'pytajnik'
+    'k': 0,
+    'f': 1,
+    'p': 2
 }
 
 def main():
@@ -136,7 +136,7 @@ def main():
         print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(l_flag, l_pozostalych_min))
         t, wspolrzedne = nowa_plansza.kliknij()
         wskazane_pole = nowa_plansza.tab_przyciskow[wspolrzedne[0]][wspolrzedne[1]]
-        if TRYB_INTERAKCJI[t] == 'klikniecie':  # kliknięcie na konkretne pole
+        if TRYB_INTERAKCJI[t] == 0:  # kliknięcie na konkretne pole
             if not rozstawione:  # jeśli to pierwsze naciśnięte pole to rozstaw na reszcie pól planszy bomby
                 nowa_plansza.rozstaw_miny(l_min, *wspolrzedne)
                 rozstawione = True
@@ -150,7 +150,7 @@ def main():
                 print("BOMBA - PRZEGRANA!")
                 break
 
-        if TRYB_INTERAKCJI[t] == 'flaga':  # ustawienie lub usunięcie flagi na polu
+        if TRYB_INTERAKCJI[t] == 1:  # ustawienie lub usunięcie flagi na polu
             wskazane_pole.flaga = not wskazane_pole.flaga
             if wskazane_pole.flaga:
                 l_flag += 1
@@ -159,7 +159,7 @@ def main():
                 l_flag -= 1
                 l_pozostalych_min += 1
             wskazane_pole.pytajnik = False
-        if TRYB_INTERAKCJI[t] == 'pytajnik':  # ustawienie lub usunięcie znaku zapytania
+        if TRYB_INTERAKCJI[t] == 2:  # ustawienie lub usunięcie znaku zapytania
             wskazane_pole.pytajnik = not wskazane_pole.pytajnik
             wskazane_pole.flaga = False
 
