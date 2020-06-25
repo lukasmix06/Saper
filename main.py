@@ -111,12 +111,7 @@ class Plansza:
                         if self.tab_przyciskow[i][j].sasiednie_bomby == 0: # sprawdza czy sąsiaduje z bombami i jeśli nie, to
                             self.rozprzestrzeniaj(i, j) # rozprzestrzenia się dalej
 
-
-TRYB_INTERAKCJI = {
-    'k': 0,
-    'f': 1,
-    'p': 2
-}
+KLIK, FLAGA, PYTAJNIK = 'k', 'f', 'p'
 
 def main():
     n, m, l_min = pobierz_dane()
@@ -139,9 +134,9 @@ def main():
         print("="*80)
         print('SAPER'.center(80))
         print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(l_flag, l_pozostalych_min))
-        t, wspolrzedne = nowa_plansza.kliknij()
+        tryb, wspolrzedne = nowa_plansza.kliknij()
         wskazane_pole = nowa_plansza.tab_przyciskow[wspolrzedne[0]][wspolrzedne[1]]
-        if TRYB_INTERAKCJI[t] == 0:  # kliknięcie na konkretne pole
+        if tryb == KLIK:  # kliknięcie na konkretne pole
             if not rozstawione:  # jeśli to pierwsze naciśnięte pole to rozstaw na reszcie pól planszy bomby
                 nowa_plansza.rozstaw_miny(l_min, *wspolrzedne)
                 rozstawione = True
@@ -155,7 +150,7 @@ def main():
                 print("BOMBA - PRZEGRANA!")
                 break
 
-        if TRYB_INTERAKCJI[t] == 1:  # ustawienie lub usunięcie flagi na polu
+        if tryb == FLAGA:  # ustawienie lub usunięcie flagi na polu
             wskazane_pole.flaga = not wskazane_pole.flaga
             if wskazane_pole.flaga:
                 l_flag += 1
@@ -164,7 +159,7 @@ def main():
                 l_flag -= 1
                 l_pozostalych_min += 1
             wskazane_pole.pytajnik = False
-        if TRYB_INTERAKCJI[t] == 2:  # ustawienie lub usunięcie znaku zapytania
+        if tryb == PYTAJNIK:  # ustawienie lub usunięcie znaku zapytania
             wskazane_pole.pytajnik = not wskazane_pole.pytajnik
             wskazane_pole.flaga = False
 
