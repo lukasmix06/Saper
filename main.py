@@ -10,6 +10,7 @@ MAX_DIM = 15
 
 
 def pobierz_dane():
+    "Pobieranie obu wymiarów planszy i liczby min od użytkownika"
     while True:
         n = int(input("Wprowadź pierwszy wymiar planszy: "))
         if n < 2 or n > MAX_DIM:
@@ -63,12 +64,14 @@ class Plansza:
         self.m = m
 
     def kliknij(self):
+        """Pobiera od użytkownika i zwraca tryb i wspolrzedne pola"""
         odczyt = input().split()
         tryb = odczyt[0]
         wspolrzedne = int(odczyt[1]), int(odczyt[2])
-        return tryb, wspolrzedne # zwraca pobrany z klawiatury tryb i współrzędne pola
+        return tryb, wspolrzedne
 
     def rozstaw_miny(self, l_min, x, y):
+        """Wylosowanie pozycji i rozstawienie na nich bomb"""
         poz_pierwsza = x*self.m + y
         pozycje_do_losowania = list(range(self.n*self.m))
         pozycje_do_losowania.remove(poz_pierwsza) # usunięcie pierwszej zaznaczonej pozycji
@@ -86,6 +89,7 @@ class Plansza:
                         self.tab_przyciskow[k][l].sasiednie_bomby += 1
 
     def wyswietl(self):
+        """Wyswietla aktualną planszę"""""
         print("|{0:4}||".format(''),end='')
         for i in range(self.m):
             print("{0:4}|".format(i),end='') # Górny, poziomy rząd kolejnych liczb opisujący 2. współrzędną pola
@@ -97,7 +101,8 @@ class Plansza:
                 wyswietlane_pole.pokaz()
             print("\n",'-'*(6*self.m))
 
-    def rozprzestrzeniaj(self, x, y): # funkcja rozprzestrzeniająca widoczne pola, dookoła pola niesąsiadującego z minami
+    def rozprzestrzeniaj(self, x, y):
+        """funkcja rozprzestrzeniająca widoczność pól dookoła pola niesąsiadującego z minami"""
         for i in [x - 1, x, x + 1]:
             for j in [y - 1, y, y + 1]:
                 if i >= 0 and j >= 0 and i < self.n and j < self.m: # jeśli dane pole istnieje (tzn ma odpowiednie współrzędne)
