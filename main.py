@@ -165,14 +165,16 @@ def main():
 
         nowa_plansza.wyswietl()
 
+        # SPRAWDZANIE, CZY WYGRANA
+        licznik_odkrytych = 0
         wszystko_dobrze_oznaczone = True
-        for i in range(n):
-            for j in range(m):
-                if nowa_plansza.tab_przyciskow[i][j].bomba != nowa_plansza.tab_przyciskow[i][j].flaga:
-                    wszystko_dobrze_oznaczone = False
-                    break
 
-        licznik_odkrytych = sum([nowa_plansza.tab_przyciskow[i][j].widoczny for i in range(n) for j in range(m)])
+        for rzad in nowa_plansza.tab_przyciskow:
+            for pole in rzad:
+                licznik_odkrytych += pole.widoczny
+                if wszystko_dobrze_oznaczone and pole.bomba != pole.flaga:
+                    wszystko_dobrze_oznaczone = False
+
         if licznik_odkrytych == n * m - l_min or wszystko_dobrze_oznaczone:
             print("GRATULACJE - WYGRAŁEŚ!")
             break
