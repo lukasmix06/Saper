@@ -1,36 +1,35 @@
 import random
 
-# import tkinter as tk
-
-# okno = tk.Tk()
-
-# etykieta = tk.Label(okno, "SAPER")
-
 MAX_DIM = 15
 
+def dobre_wymiary(n, m):
+    if n < 2 or n > MAX_DIM or m < 2 or m > MAX_DIM:
+        return False, "Niewlasciwy rozmiar! - musi miescic się w zakresie [2 - {}]".format(MAX_DIM)
+    else:
+        return True, ""
+
+def dobre_miny(l_min, n, m):
+    if l_min < 0 or l_min >= n*m:
+        return False, "Niewlasciwa liczba min - musi byc nieujemna i mniejsza od {}".format(n*m)
+    else:
+        return True, ""
 
 def pobierz_dane():
     "Pobieranie obu wymiarów planszy i liczby min od użytkownika"
-    while True:
-        n = int(input("Wprowadź pierwszy wymiar planszy: "))
-        if n < 2 or n > MAX_DIM:
-            print("Niewlasciwy rozmiar! - musi miescic się w zakresie [2 - {}]".format(MAX_DIM))
-        else:
-            break
 
-    while True:
-        m = int(input("Wprowadź drugi wymiar planszy: "))
-        if m < 2 or m > MAX_DIM:
-            print("Niewlasciwy rozmiar! - musi miescic się w zakresie [2 - {}]".format(MAX_DIM))
-        else:
-            break
+    wymiary = input("Wprowadź oba wymiary planszy oddzielone spacją: ").split()
+    n = int(wymiary[0])
+    m = int(wymiary[1])
+    while not dobre_wymiary(n, m)[0]:
+        print(dobre_wymiary(n, m)[1])
+        wymiary = input("Wprowadź oba wymiary planszy oddzielone spacją: ").split()
+        n = int(wymiary[0])
+        m = int(wymiary[1])
 
-    while True:
+    l_min = int(input("Wprowadź liczbę min: "))
+    while not dobre_miny(l_min, n, m)[0]:
+        print(dobre_miny(l_min, n, m)[1])
         l_min = int(input("Wprowadź liczbę min: "))
-        if l_min < 0 or l_min >= n*m:
-            print("Niewlasciwa liczba min - musi byc nieujemna i mniejsza od {}".format(n*m))
-        else:
-            break
 
     return n, m, l_min
 
