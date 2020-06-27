@@ -1,6 +1,7 @@
 import random
 
 MAX_DIM = 15
+KLIK, FLAGA, PYTAJNIK = 'k', 'f', 'p'
 
 def dobre_wymiary(n, m):
     if n < 2 or n > MAX_DIM or m < 2 or m > MAX_DIM:
@@ -57,28 +58,32 @@ class Przycisk: # Pole
                 print("|".rjust(5), end='')
 
 class Plansza:
-    def __init__(self, n, m):
+    def __init__(self, n, m, l_min):
         self.tab_przyciskow = [[Przycisk() for i in range(m)] for j in range(n)]
         self.n = n
         self.m = m
+        self.l_flag = 0
+        self.l_min = l_min
+        self.l_pozostalych_min = l_min
+        self.rozstawione = False
 
     def kliknij(self):
         """Pobiera od użytkownika i zwraca tryb i wspolrzedne pola"""
         odczyt = input().split()
         tryb = odczyt[0]
-        wspolrzedne = int(odczyt[1]), int(odczyt[2])
-        return tryb, wspolrzedne
+        x, y = int(odczyt[1]), int(odczyt[2])
+        return tryb, x, y
 
-    def rozstaw_miny(self, l_min, x, y):
+    def rozstaw_miny(self, x, y):
         """Wylosowanie pozycji i rozstawienie na nich bomb"""
         poz_pierwsza = x*self.m + y
         pozycje_do_losowania = list(range(self.n*self.m))
         pozycje_do_losowania.remove(poz_pierwsza) # usunięcie pierwszej zaznaczonej pozycji
         # print(pozycje_do_losowania)
-        bombowa_lista = random.sample(pozycje_do_losowania, l_min)
-        bombowa_lista_wspolrzedne = [(bombowa_lista[i]//self.m, bombowa_lista[i]%self.m) for i in range(l_min)]
+        bombowa_lista = random.sample(pozycje_do_losowania, self.l_min)
+        bombowa_lista_wspolrzedne = [(bombowa_lista[i]//self.m, bombowa_lista[i]%self.m) for i in range(self.l_min)]
         # print(bombowa_lista)
-        print(bombowa_lista_wspolrzedne)
+        # print(bombowa_lista_wspolrzedne)
         for i, j in bombowa_lista_wspolrzedne:
             self.tab_przyciskow[i][j].bomba = True # ustawia dane pole na bombę
             # a następnie dla każdego pola dookoła niego zwiększa o 1 licznik sąsiednich bomb
@@ -110,18 +115,73 @@ class Plansza:
                         if self.tab_przyciskow[i][j].sasiednie_bomby == 0: # sprawdza czy sąsiaduje z bombami i jeśli nie, to
                             self.rozprzestrzeniaj(i, j) # rozprzestrzenia się dalej
 
-KLIK, FLAGA, PYTAJNIK = 'k', 'f', 'p'
+    def interakcja(self, tryb, x, y):
+        wskazane_pole = self.tab_przyciskow[x][y]
+        if tryb == KLIK:  # kliknięcie na konkretne pole
+            if not self.rozstawione:  # jeśli to pierwsze naciśnięte pole to rozstaw na reszcie pól planszy bomby
+                self.rozstaw_miny(x, y)
+                self.rozstawione = True
+
+            wskazane_pole.widoczny = True
+            if wskazane_pole.sasiednie_bomby == 0:
+                self.rozprzestrzeniaj(x, y)
+
+            if wskazane_pole.bomba:  # Jeśli w polu jest bomba:
+                self.wyswietl()
+                print("BOMBA - PRZEGRANA!")
+                return True
+
+        if tryb == FLAGA:  # ustawienie lub usunięcie flagi na polu
+            wskazane_pole.flaga = not wskazane_pole.flaga
+            if wskazane_pole.flaga:
+                self.l_flag += 1
+                self.l_pozostalych_min -= 1
+            else:
+                self.l_flag -= 1
+                self.l_pozostalych_min += 1
+            wskazane_pole.pytajnik = False
+        if tryb == PYTAJNIK:  # ustawienie lub usunięcie znaku zapytania
+            wskazane_pole.pytajnik = not wskazane_pole.pytajnik
+            wskazane_pole.flaga = False
+        return False
+
+
+
+
+    def pojedynczy_ruch(self, tryb, x, y):
+        byla_bomba = self.interakcja(tryb, x, y)
+        if byla_bomba:
+            return True  # KONIEC GRY
+
+        self.wyswietl()
+
+        # SPRAWDZANIE, CZY WYGRANA
+        licznik_odkrytych = 0
+        wszystko_dobrze_oznaczone = True
+
+        for rzad in self.tab_przyciskow:
+            for pole in rzad:
+                licznik_odkrytych += pole.widoczny
+                if wszystko_dobrze_oznaczone and pole.bomba != pole.flaga:
+                    wszystko_dobrze_oznaczone = False
+
+        if licznik_odkrytych == self.n * self.m - self.l_min or wszystko_dobrze_oznaczone:
+            print("GRATULACJE - WYGRAŁEŚ!")
+            return True
+        else:
+            return False
+
+
 
 def main():
     n, m, l_min = pobierz_dane()
 
-    l_flag = 0
-    l_pozostalych_min = l_min
     # napis = 'ROZPOCZNIJ GRĘ'
     # print(napis)
     # przycisk rozpoczęcia nowej gry(element interfejsu, z powyższym napisem
-    nowa_plansza = Plansza(n, m)
-    rozstawione = False
+
+    nowa_plansza = Plansza(n, m, l_min)
+
     print("WERJA WSTĘPNA (BEZ GUI):")
     print("Aby wywołać interakcję z danym polem należy wprowadzić polecenie według schematu:")
     print("<tryb> <1. wspolrzedna> <2. wspolrzedna>")
@@ -129,53 +189,19 @@ def main():
     print("f 1 4 - oflagowanie (lub jego cofnięcie) pola o współrzędnych (1,4)")
     print("p 0 4 - oznaczenie (lub jego cofnięcie) znakiem zapytania pola o wspolrzednych (0,4)")
 
+    print("=" * 80)
+    print('SAPER'.center(80))
+    print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(nowa_plansza.l_flag,
+                                                                          nowa_plansza.l_pozostalych_min))
+    nowa_plansza.wyswietl()
     while True:  # GŁÓWNA PĘTLA GRY
-        print("="*80)
+        tryb, x, y = nowa_plansza.kliknij()
+        print("=" * 80)
         print('SAPER'.center(80))
-        print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(l_flag, l_pozostalych_min))
-        tryb, wspolrzedne = nowa_plansza.kliknij()
-        wskazane_pole = nowa_plansza.tab_przyciskow[wspolrzedne[0]][wspolrzedne[1]]
-        if tryb == KLIK:  # kliknięcie na konkretne pole
-            if not rozstawione:  # jeśli to pierwsze naciśnięte pole to rozstaw na reszcie pól planszy bomby
-                nowa_plansza.rozstaw_miny(l_min, *wspolrzedne)
-                rozstawione = True
-
-            wskazane_pole.widoczny = True
-            if wskazane_pole.sasiednie_bomby == 0:
-                nowa_plansza.rozprzestrzeniaj(*wspolrzedne)
-
-            if wskazane_pole.bomba:  # Jeśli w polu jest bomba:
-                nowa_plansza.wyswietl()
-                print("BOMBA - PRZEGRANA!")
-                break
-
-        if tryb == FLAGA:  # ustawienie lub usunięcie flagi na polu
-            wskazane_pole.flaga = not wskazane_pole.flaga
-            if wskazane_pole.flaga:
-                l_flag += 1
-                l_pozostalych_min -= 1
-            else:
-                l_flag -= 1
-                l_pozostalych_min += 1
-            wskazane_pole.pytajnik = False
-        if tryb == PYTAJNIK:  # ustawienie lub usunięcie znaku zapytania
-            wskazane_pole.pytajnik = not wskazane_pole.pytajnik
-            wskazane_pole.flaga = False
-
-        nowa_plansza.wyswietl()
-
-        # SPRAWDZANIE, CZY WYGRANA
-        licznik_odkrytych = 0
-        wszystko_dobrze_oznaczone = True
-
-        for rzad in nowa_plansza.tab_przyciskow:
-            for pole in rzad:
-                licznik_odkrytych += pole.widoczny
-                if wszystko_dobrze_oznaczone and pole.bomba != pole.flaga:
-                    wszystko_dobrze_oznaczone = False
-
-        if licznik_odkrytych == n * m - l_min or wszystko_dobrze_oznaczone:
-            print("GRATULACJE - WYGRAŁEŚ!")
+        print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(nowa_plansza.l_flag,
+                                                                              nowa_plansza.l_pozostalych_min))
+        czy_koniec = nowa_plansza.pojedynczy_ruch(tryb, x, y)
+        if czy_koniec:
             break
 
 
