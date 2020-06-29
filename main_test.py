@@ -31,34 +31,75 @@ class FalseInputTest(unittest.TestCase):
             self.assertEqual(main.dobre_miny(miny, *rozmiar)[1],"")
 
 
-class SymulacjaTest(unittest.TestCase):
+class RozgrywkaTest(unittest.TestCase):
     def setUp(self):
         self.n = 8
         self.m = 8
         self.l_min = 12
+        self.nowa_plansza = main.Plansza(self.n, self.m, self.l_min)
 
     def test_pierwsze_bez_bomby(self):
         """Wykonanie 10 testów z kliknięciem dowolnego pola w nowej grze, każde takie pole powinno być wolne od miny."""
         tryb = 'k'
         przypadkowe_pola = [(random.randrange(self.n), random.randrange(self.m)) for i in range(10)]
         for x, y in przypadkowe_pola:
-            nowa_plansza = main.Plansza(self.n, self.m, self.l_min)
-            byla_bomba = nowa_plansza.interakcja(tryb, x, y)
+            n_pl = main.Plansza(self.n, self.m, self.l_min)
+            byla_bomba = n_pl.interakcja(tryb, x, y)
             self.assertFalse(byla_bomba)
 
     def test_symulacja_gry(self):
-        nowa_plansza = main.Plansza(self.n, self.m, self.l_min)
+        """TEST 2. - Kliknięcie pola, wyświetla się liczba min w sąsiedztwie pola
+
+       TEST 4. - Kliknięcie pola gdy brak min w sąsiedztwie
+
+        TEST 5. - Oznaczenie pola jako “tu jest mina” - licznik oznaczonych powinien wzrosnąć o 1"""
         random.seed(1111)
         print("=" * 80)
         print('SAPER'.center(80))
-        nowa_plansza.wyswietl()
+        self.nowa_plansza.wyswietl()
         for tryb, x, y in dosymulacji.polecenia:
+           print("=" * 80)
+           print('SAPER'.center(80))
+           print("\nUŻYTKOWNIK WPROWADZIŁ: {} {} {}\n".format(tryb, x, y))
+           czy_koniec = self.nowa_plansza.pojedynczy_ruch(tryb, x, y)
+           print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(self.nowa_plansza.l_flag,
+                                                                                 self.nowa_plansza.l_pozostalych_min))
+           time.sleep(1.0)
+        self.assertTrue(czy_koniec)
+
+    def test_przegrana(self):
+        "TEST 3. - Kliknięcie pola, wyświetla się mina, gra się kończy,"
+        time.sleep(3.0)
+        random.seed(2222)
+        print("=" * 80)
+        print('SAPER'.center(80))
+        self.nowa_plansza.wyswietl()
+        for tryb, x, y in dosymulacji.polecenia2:
             print("=" * 80)
             print('SAPER'.center(80))
-            print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(nowa_plansza.l_flag, nowa_plansza.l_pozostalych_min))
             print("\nUŻYTKOWNIK WPROWADZIŁ: {} {} {}\n".format(tryb, x, y))
-            nowa_plansza.pojedynczy_ruch(tryb, x, y)
+            czy_koniec = self.nowa_plansza.pojedynczy_ruch(tryb, x, y)
+            print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(self.nowa_plansza.l_flag,
+                                                                                  self.nowa_plansza.l_pozostalych_min))
             time.sleep(1.0)
+        self.assertTrue(czy_koniec)
+        time.sleep(3.0)
+
+    def test_znak_zapytania(self):
+        """TEST 6. Oznaczenie pola jako “tu może być mina”"""
+        for tryb, x, y in dosymulacji.polecenia3:
+            self.nowa_plansza.interakcja(tryb, x, y)
+        for i in range(self.n):
+            for j in range(self.m):
+                if (i, j) == (5, 3):
+                    self.assertTrue(self.nowa_plansza.tab_przyciskow[i][j].pytajnik)
+                elif (i, j) == (3, 5):
+                    self.assertTrue(self.nowa_plansza.tab_przyciskow[i][j].pytajnik)
+                else:
+                    self.assertFalse(self.nowa_plansza.tab_przyciskow[i][j].pytajnik)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
