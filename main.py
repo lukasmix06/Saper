@@ -1,21 +1,23 @@
 import random
 
+
 MAX_DIM = 15
 KLIK, FLAGA, PYTAJNIK = 'k', 'f', 'p'
 
+
 def dobre_wymiary(dlugosc, szerokosc):
     """Funkcja pobiera dlugosc i szerokosc planszy, ocenia ich poprawność i wypisuje odpowiedni komunikat"""
-    if not (1 < dlugosc <= MAX_DIM) or not (1 < szerokosc <= MAX_DIM):
+    if not 1 < dlugosc <= MAX_DIM or not 1 < szerokosc <= MAX_DIM:
         return False, "Niewlasciwe rozmiary! - muszą miescic się w zakresie [2 - {}]".format(MAX_DIM)
-    else:
-        return True, ""
+    return True, ""
+
 
 def dobre_miny(liczba_min, dlugosc, szerokosc):
     """Funkcja pobiera liczbę min, ocenia jej poprawność i wypisuje odpowiedni komunikat"""
-    if not (0 <= liczba_min < dlugosc*szerokosc):
+    if not 0 <= liczba_min < dlugosc*szerokosc:
         return False, "Niewlasciwa liczba min - musi byc nieujemna i mniejsza od {}".format(dlugosc*szerokosc)
-    else:
-        return True, ""
+    return True, ""
+
 
 def pobierz_dane():
     """Pobieranie obu wymiarów planszy i liczby min od użytkownika"""
@@ -37,7 +39,8 @@ def pobierz_dane():
     return dlugosc, szerokosc, liczba_min
 
 
-class Przycisk: # Pole
+class Przycisk:  # Pole
+    """Klasa reprezentująca pole(przycisk) na planszy i jego właściwości"""
     def __init__(self):
         self.bomba = False
         self.sasiednie_bomby = 0
@@ -60,7 +63,9 @@ class Przycisk: # Pole
             else:
                 print("|".rjust(5), end='')
 
+
 class Plansza:
+    """Klasa reprezentująca planszę ze wszystkimi polami i operacjami na niej"""
     def __init__(self, dlugosc, szerokosc, liczba_min):
         self.tab_przyciskow = [[Przycisk() for i in range(szerokosc)] for j in range(dlugosc)]
         self.dlugosc = dlugosc
@@ -81,29 +86,29 @@ class Plansza:
         """Wylosowanie pozycji i rozstawienie na nich bomb"""
         pozycja_pierwsza = x*self.szerokosc + y
         pozycje_do_losowania = list(range(self.dlugosc*self.szerokosc))
-        pozycje_do_losowania.remove(pozycja_pierwsza) # usunięcie pierwszej zaznaczonej pozycji
+        pozycje_do_losowania.remove(pozycja_pierwsza)  # usunięcie pierwszej zaznaczonej pozycji
         # print(pozycje_do_losowania)
         bombowa_lista = random.sample(pozycje_do_losowania, self.liczba_min)
-        bombowa_lista_wspolrzedne = [(bombowa_lista[i]//self.szerokosc, bombowa_lista[i]%self.szerokosc)
+        bombowa_lista_wspolrzedne = [(bombowa_lista[i] // self.szerokosc, bombowa_lista[i] % self.szerokosc)
                                      for i in range(self.liczba_min)]
         # print(bombowa_lista)
         # print(bombowa_lista_wspolrzedne)
         for i, j in bombowa_lista_wspolrzedne:
-            self.tab_przyciskow[i][j].bomba = True # ustawia dane pole na bombę
+            self.tab_przyciskow[i][j].bomba = True  # ustawia dane pole na bombę
             # a następnie dla każdego pola dookoła niego zwiększa o 1 licznik sąsiednich bomb
             for k in [i-1, i, i+1]:
                 for l in [j-1, j, j+1]:
-                    if 0 <= k < self.dlugosc and 0 <= l < self.szerokosc: # przy zapewnieniu że pole istnieje
+                    if 0 <= k < self.dlugosc and 0 <= l < self.szerokosc:  # przy zapewnieniu że pole istnieje
                         self.tab_przyciskow[k][l].sasiednie_bomby += 1
 
     def wyswietl(self):
-        """Wyswietla aktualną planszę"""""
+        """Wyswietla aktualną planszę"""
         print("|{0:4}||".format(''), end='')
         for i in range(self.szerokosc):
-            print("{0:4}|".format(i), end='') # Górny, poziomy rząd kolejnych liczb opisujący 2. współrzędną pola
+            print("{0:4}|".format(i), end='')  # Górny, poziomy rząd kolejnych liczb opisujący 2. współrzędną pola
         print("\n", "="*(6*self.szerokosc))
         for j in range(self.dlugosc):
-            print("|{0:4}||".format(j), end='') # Boczny, pionowy rząd kolejnych liczb opisujący 1. współrzędną pola
+            print("|{0:4}||".format(j), end='')  # Boczny, pionowy rząd kolejnych liczb opisujący 1. współrzędną pola
             for k in range(self.szerokosc):
                 wyswietlane_pole = self.tab_przyciskow[j][k]
                 wyswietlane_pole.pokaz()
@@ -113,11 +118,11 @@ class Plansza:
         """Metoda rozprzestrzeniająca widoczność pól dookoła pola niesąsiadującego z minami"""
         for i in [x - 1, x, x + 1]:
             for j in [y - 1, y, y + 1]:
-                if 0 <= i < self.dlugosc and 0 <= j < self.szerokosc: # jeśli dane pole istnieje (tzn ma odpowiednie współrzędne)
-                    if not self.tab_przyciskow[i][j].widoczny: # jeśli pole niewidoczne to
-                        self.tab_przyciskow[i][j].widoczny = True # ustawia na widoczne
-                        if self.tab_przyciskow[i][j].sasiednie_bomby == 0: # sprawdza czy sąsiaduje z bombami i jeśli nie, to
-                            self.rozprzestrzeniaj(i, j) # rozprzestrzenia się dalej
+                if 0 <= i < self.dlugosc and 0 <= j < self.szerokosc:  # jeśli dane pole istnieje
+                    if not self.tab_przyciskow[i][j].widoczny:  # jeśli pole niewidoczne to
+                        self.tab_przyciskow[i][j].widoczny = True  # ustawia na widoczne
+                        if self.tab_przyciskow[i][j].sasiednie_bomby == 0:  # sprawdza czy nie sąsiaduje z bombami
+                            self.rozprzestrzeniaj(i, j)  # rozprzestrzenia się dalej
 
     def interakcja(self, tryb, x, y):
         """Metoda pobiera tryb interakcji oraz wspolrzedne pola i przeprowadza na nim odpowiednią operację"""
@@ -150,16 +155,12 @@ class Plansza:
             wskazane_pole.flaga = False
         return False
 
-
-
-
     def pojedynczy_ruch(self, tryb, x, y):
         """Metoda wykonująca operacje na planszy przy pojedynczym przejściu pętli takie jak:
 
         zmiana stanu wybranego pola na planszy, wyswietlenie zaktualilzowaanej planszy, kontrola wygranej
 
         zwraca informację o zakończeniu rozgrywki (gdy bomba lub wygrana)"""
-
 
         if self.interakcja(tryb, x, y):
             return True  # KONIEC GRY, BO BOMBA
@@ -177,10 +178,8 @@ class Plansza:
 
         if licznik_odkrytych == self.dlugosc * self.szerokosc - self.liczba_min or wszystko_dobrze_oznaczone:
             print("GRATULACJE - WYGRAŁEŚ!")
-            return True #KONIEC GRY, BO WYGRANA
-        else:
-            return False
-
+            return True  # KONIEC GRY, BO WYGRANA
+        return False
 
 
 def main():
@@ -208,14 +207,10 @@ def main():
         tryb, x, y = nowa_plansza.kliknij()
         print("=" * 80)
         print('SAPER'.center(80))
+        if nowa_plansza.pojedynczy_ruch(tryb, x, y):
+            break
         print("liczba oznaczonych pól: {}\nliczba pozostałych min: {}".format(nowa_plansza.liczba_flag,
                                                                               nowa_plansza.liczba_pozostalych_min))
 
-        if nowa_plansza.pojedynczy_ruch(tryb, x, y):
-            break
-
-
 if __name__ == '__main__':
     main()
-
-

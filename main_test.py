@@ -1,9 +1,13 @@
 """Testy modułu main."""
 
 import unittest
-import main
+
 import random
-import dosymulacji
+
+import main
+
+import dosymulacji as ds
+
 
 class FalseInputTest(unittest.TestCase):
     """TEST 1 - Próba rozpoczęcia gry z niepoprawnym rozmiarem planszy i niepoprawną liczbą min"""
@@ -20,12 +24,12 @@ class FalseInputTest(unittest.TestCase):
                              "Niewlasciwe rozmiary! - muszą miescic się w zakresie [2 - 15]".format(main.MAX_DIM))
 
         for przyklad in self.dobre_wymiary:
-            self.assertEqual(main.dobre_wymiary(*przyklad)[1],"")
+            self.assertEqual(main.dobre_wymiary(*przyklad)[1], "")
 
     def test_bomby(self):
         for miny, rozmiar in self.zle_miny:
             self.assertEqual(main.dobre_miny(miny, *rozmiar)[1],
-                            "Niewlasciwa liczba min - musi byc nieujemna i mniejsza od {}".format(rozmiar[0]*rozmiar[1]))
+                             "Niewlasciwa liczba min - musi byc nieujemna i mniejsza od {}".format(rozmiar[0]*rozmiar[1]))
         for miny, rozmiar in self.dobre_miny:
             self.assertEqual(main.dobre_miny(miny, *rozmiar)[1], "")
 
@@ -46,7 +50,7 @@ class RozgrywkaTest(unittest.TestCase):
             byla_bomba = nowa_plansza.interakcja(tryb, x, y)
             self.assertFalse(byla_bomba)
 
-    def test_symulacja_gry(self):
+    def test_wygrana(self):
         """TEST 2. - Kliknięcie pola, wyświetla się liczba min w sąsiedztwie pola
 
        TEST 4. - Kliknięcie pola gdy brak min w sąsiedztwie
@@ -54,21 +58,23 @@ class RozgrywkaTest(unittest.TestCase):
         TEST 5. - Oznaczenie pola jako “tu jest mina” - licznik oznaczonych powinien wzrosnąć o 1"""
         random.seed(1111)
         self.nowa_plansza.wyswietl()
-        for tryb, x, y in dosymulacji.polecenia:
-           czy_koniec = self.nowa_plansza.pojedynczy_ruch(tryb, x, y)
-        self.assertTrue(czy_koniec)
+        ostatnie_polecenie = ds.polecenia.pop()
+        for tryb, x, y in ds.polecenia:
+            self.assertFalse(self.nowa_plansza.pojedynczy_ruch(tryb, x, y))
+        self.assertTrue(self.nowa_plansza.pojedynczy_ruch(*ostatnie_polecenie))
 
     def test_przegrana(self):
-        "TEST 3. - Kliknięcie pola, wyświetla się mina, gra się kończy,"
+        """TEST 3. - Kliknięcie pola, wyświetla się mina, gra się kończy,"""
         random.seed(2222)
         self.nowa_plansza.wyswietl()
-        for tryb, x, y in dosymulacji.polecenia2:
-            czy_koniec = self.nowa_plansza.pojedynczy_ruch(tryb, x, y)
-        self.assertTrue(czy_koniec)
+        ostanie_polecenie = ds.polecenia2.pop()
+        for tryb, x, y in ds.polecenia2:
+            self.assertFalse(self.nowa_plansza.pojedynczy_ruch(tryb, x, y))
+        self.assertTrue(self.nowa_plansza.pojedynczy_ruch(*ostanie_polecenie))
 
     def test_znak_zapytania(self):
         """TEST 6. Oznaczenie pola jako “tu może być mina”"""
-        for tryb, x, y in dosymulacji.polecenia3:
+        for tryb, x, y in ds.polecenia3:
             self.nowa_plansza.interakcja(tryb, x, y)
         for i in range(self.dlugosc):
             for j in range(self.szerokosc):
