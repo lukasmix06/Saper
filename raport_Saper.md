@@ -4,7 +4,9 @@
 
 - GŁÓWNE KLASY:
   - Główny rdzeń programu stanowi **klasa "Plansza"**, która zawiera wiele metod, na niej odbywa się większość operacji i przekształceń. Zawiera ona w sobie **obiekty klasy - "Przycisk"**, która reprezentuje pojedyncze pole na planszy. 
+  https://github.com/lukasmix06/Saper/blob/ebff595e40162d94eea17c0fafdbedf89d4d5498/main.py#L67-L76
   - Każde takie pole zawiera szereg zmiennych opisujących jego stan m.in czy zawiera bombę **(bomba)**, czy jest oflagowane **("flaga")**, czy chociażby czy pole jest już widoczne dla użytkownika, tzn. czy zostało już przez niego kliknięte **("widoczny")**.
+  https://github.com/lukasmix06/Saper/blob/ebff595e40162d94eea17c0fafdbedf89d4d5498/main.py#L42-L49
 
 - OMÓWIENIE FUNKCJONALNOŚCI:
   - Na początku programu **użytkownik jest proszony o podanie obu wymiarów planszy**, aż do momentu gdy będą one spełniały odpowiednie kryteria wielkości. **(funkcja dobre_wymiary)**
@@ -23,6 +25,9 @@ do **metody pola "pokaz"**, które wyświetla środek pola zgodnie z aktualnymi 
 - CHARAKTERYSTYCZNE ELEMENTY KODU:
   - W kodzie zastosowałem **szereg konstrukcji** takich jak:
     - List comprehensions
+    https://github.com/lukasmix06/Saper/blob/ebff595e40162d94eea17c0fafdbedf89d4d5498/main.py#L70
+    https://github.com/lukasmix06/Saper/blob/ebff595e40162d94eea17c0fafdbedf89d4d5498/main.py#L92-L93
+    https://github.com/lukasmix06/Saper/blob/ebff595e40162d94eea17c0fafdbedf89d4d5498/main_test.py#L47
     - Klasy
     - Moduły
 
