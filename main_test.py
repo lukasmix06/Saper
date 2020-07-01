@@ -1,12 +1,11 @@
 """Testy modułu main."""
 
-import unittest
 
 import random
-
-import main
+import unittest
 
 import dosymulacji as ds
+import main
 
 
 class FalseInputTest(unittest.TestCase):
@@ -44,7 +43,7 @@ class RozgrywkaTest(unittest.TestCase):
     def test_pierwsze_bez_bomby(self):
         """Wykonanie 10 testów z kliknięciem dowolnego pola w nowej grze, każde takie pole powinno być wolne od miny."""
         tryb = 'k'
-        przypadkowe_pola = [(random.randrange(self.dlugosc), random.randrange(self.szerokosc)) for i in range(10)]
+        przypadkowe_pola = [(random.randrange(self.dlugosc), random.randrange(self.szerokosc)) for _ in range(10)]
         for x, y in przypadkowe_pola:
             nowa_plansza = main.Plansza(self.dlugosc, self.szerokosc, self.liczba_min)
             byla_bomba = nowa_plansza.interakcja(tryb, x, y)
@@ -76,14 +75,14 @@ class RozgrywkaTest(unittest.TestCase):
         """TEST 6. Oznaczenie pola jako “tu może być mina”"""
         for tryb, x, y in ds.polecenia3:
             self.nowa_plansza.interakcja(tryb, x, y)
-        for i in range(self.dlugosc):
-            for j in range(self.szerokosc):
-                if (i, j) == (5, 3):
-                    self.assertTrue(self.nowa_plansza.tab_przyciskow[i][j].pytajnik)
-                elif (i, j) == (3, 5):
-                    self.assertTrue(self.nowa_plansza.tab_przyciskow[i][j].pytajnik)
-                else:
-                    self.assertFalse(self.nowa_plansza.tab_przyciskow[i][j].pytajnik)
+        oczekiwane_pytajniki = [
+            [False] * self.szerokosc for _ in range(self.dlugosc)]
+        oczekiwane_pytajniki[5][3] = True
+        oczekiwane_pytajniki[3][5] = True
+        rzeczywiste_pytajniki = [
+            [x.pytajnik for x in wiersz]
+            for wiersz in self.nowa_plansza.tab_przyciskow]
+        self.assertEqual(rzeczywiste_pytajniki, oczekiwane_pytajniki)
 
 
 if __name__ == '__main__':

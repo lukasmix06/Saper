@@ -67,7 +67,7 @@ class Przycisk:  # Pole
 class Plansza:
     """Klasa reprezentująca planszę ze wszystkimi polami i operacjami na niej"""
     def __init__(self, dlugosc, szerokosc, liczba_min):
-        self.tab_przyciskow = [[Przycisk() for i in range(szerokosc)] for j in range(dlugosc)]
+        self.tab_przyciskow = [[Przycisk() for _ in range(szerokosc)] for _ in range(dlugosc)]
         self.dlugosc = dlugosc
         self.szerokosc = szerokosc
         self.liczba_flag = 0
